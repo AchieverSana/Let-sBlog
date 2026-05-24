@@ -104,7 +104,7 @@ app.use('/api/auth', connectMiddleware, authRoutes);
 app.use('/api/post', connectMiddleware, postRoutes);
 app.use('/api/comment', connectMiddleware, commentRoutes);
 
-app.use(express.static(path.join(__dirname, '/Frontend/dist')));
+app.use(express.static(path.join(__dirname, '../client/dist')));
 // Catch-all route for frontend - disabled due to Express 5 compatibility issue
 // app.get('/:path(.*)', (req, res) => {
 //   res.sendFile(path.resolve(__dirname, 'Frontend', 'dist', 'index.html'));
