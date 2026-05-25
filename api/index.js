@@ -104,14 +104,8 @@ app.use('/api/auth', connectMiddleware, authRoutes);
 app.use('/api/post', connectMiddleware, postRoutes);
 app.use('/api/comment', connectMiddleware, commentRoutes);
 
-app.use(express.static(path.join(__dirname, '../client/dist')));
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-});
-// Catch-all route for frontend - disabled due to Express 5 compatibility issue
-// app.get('/:path(.*)', (req, res) => {
-//   res.sendFile(path.resolve(__dirname, 'Frontend', 'dist', 'index.html'));
-// });
+
+
 
 // Error handling
 app.use((err, req, res, next) => {
