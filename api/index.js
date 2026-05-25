@@ -17,12 +17,17 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const app = express();
-
+app.get('/', (req, res) => {
+  res.send('API is running');
+});
 
 // CORS configuration - Allow all origins
 app.use(
   cors({
-    origin: true, // Reflect the request origin, or set to '*' for all (but can't use with credentials)
+    origin: [
+      'http://localhost:5173',
+      'https://YOUR-FRONTEND.vercel.app',
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with'],
