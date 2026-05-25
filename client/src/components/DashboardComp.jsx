@@ -75,7 +75,7 @@ export default function DashboardComp() {
         console.log(error.message);
       }
     };
-    if (currentUser.isAdmin) {
+    if (currentUser && currentUser.isAdmin) {
       fetchUsers();
       fetchPosts();
       fetchComments();
