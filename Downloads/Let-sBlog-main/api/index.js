@@ -8,30 +8,22 @@ import postRoutes from './src/routes/post.route.js';
 import commentRoutes from './src/routes/comment.route.js';
 import cookieParser from 'cookie-parser';
 
-
-
-
-// Configure environment variables
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config();
-}
+dotenv.config();
 
 const app = express();
 
-
-// CORS configuration - Allow all origins
 app.use(
   cors({
-    origin: true, // Reflect the request origin, or set to '*' for all (but can't use with credentials)
+    origin: true,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with'],
   })
 );
+
 let isConnected = false;
 const connectDB = async () => {
   if (isConnected) return;
-
   try {
     await mongoose.connect(process.env.MONGO_URI, {
       serverSelectionTimeoutMS: 10000,
@@ -48,28 +40,22 @@ const connectDB = async () => {
   }
 };
 
-// Middleware
 app.use(express.json());
 app.use(cookieParser());
 
-// Database middleware (only for endpoints that need DB)
 const connectMiddleware = async (req, res, next) => {
   try {
     await connectDB();
     next();
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: 'Database connection failed' });
+    res.status(500).json({ success: false, message: 'Database connection failed' });
   }
 };
 
-// Test endpoints
 app.get('/api/test', (req, res) => {
   res.json({ message: 'API is working!', timestamp: new Date() });
 });
 
-// Debug endpoints (helpful for deployment testing)
 app.get('/api/debug', (req, res) => {
   res.json({
     message: 'Debug info',
@@ -80,33 +66,11 @@ app.get('/api/debug', (req, res) => {
   });
 });
 
-app.get('/api/debug-db', async (req, res) => {
-  try {
-    await connectDB();
-    res.json({
-      message: 'Database connection successful!',
-      connected: true,
-      timestamp: new Date(),
-    });
-  } catch (error) {
-    res.json({
-      message: 'Database connection failed',
-      connected: false,
-      error: error.message,
-      timestamp: new Date(),
-    });
-  }
-});
-
-// Routes
 app.use('/api/user', connectMiddleware, userRoutes);
 app.use('/api/auth', connectMiddleware, authRoutes);
 app.use('/api/post', connectMiddleware, postRoutes);
 app.use('/api/comment', connectMiddleware, commentRoutes);
 
-
-
-// Error handling
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Internal Server Error';
@@ -117,13 +81,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Export for Vercel
-export default app;
-
-
-
-// Start server
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () =>
   console.log(`🚀 Server running on port ${PORT}`)
 );
+
+export default app;
