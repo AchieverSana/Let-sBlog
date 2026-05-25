@@ -24,10 +24,9 @@ app.get('/', (req, res) => {
 // CORS configuration - Allow all origins
 app.use(
   cors({
-    origin: [
-      'http://localhost:5173',
-      'https://YOUR-FRONTEND.vercel.app',
-    ],
+  origin: [
+  "https://let-s-blog-alpha.vercel.app"
+],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with'],
