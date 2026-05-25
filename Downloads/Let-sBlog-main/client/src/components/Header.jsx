@@ -1,4 +1,4 @@
-import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
+import { Avatar, Button, Dropdown, DropdownDivider, DropdownHeader, DropdownItem, Navbar, NavbarBrand, NavbarCollapse, NavbarLink, NavbarToggle, TextInput } from 'flowbite-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaMoon, FaSun } from 'react-icons/fa';
@@ -58,9 +58,9 @@ export default function Header() {
         to='/'
         className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'
       >
-        <span className='px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white'>
-          Sahand's
-        </span>s
+       <span className='px-2 py-1 bg-gradient-to-r from-teal-400 via-cyan-500 to-blue-500 rounded-lg text-white'>
+  Sana's
+</span>
         Blog
       </Link>
       <form onSubmit={handleSubmit}>
@@ -83,7 +83,7 @@ export default function Header() {
           pill
           onClick={() => dispatch(toggleTheme())}
         >
-          {theme === 'light' ? <FaSun /> : <FaMoon />}
+    {theme === 'light' ? <FaMoon /> : <FaSun />}
         </Button>
         {currentUser ? (
           <Dropdown
@@ -93,31 +93,38 @@ export default function Header() {
               <Avatar alt='user' img={currentUser.profilePicture} rounded />
             }
           >
-            <Dropdown.Header>
+            <DropdownHeader>
               <span className='block text-sm'>@{currentUser.username}</span>
               <span className='block text-sm font-medium truncate'>
                 {currentUser.email}
               </span>
-            </Dropdown.Header>
+            </DropdownHeader>
             <Link to={'/dashboard?tab=profile'}>
-              <Dropdown.Item>Profile</Dropdown.Item>
+              <DropdownItem>Profile</DropdownItem>
             </Link>
-            <Dropdown.Divider />
-            <Dropdown.Item onClick={handleSignout}>Sign out</Dropdown.Item>
+            <DropdownDivider />
+            <DropdownItem onClick={handleSignout}>Sign out</DropdownItem>
           </Dropdown>
         ) : (
           <Link to='/sign-in'>
-            <Button color='purple'>
-              Sign In
-            </Button>
+           <Button className='bg-gradient-to-r from-teal-400 to-cyan-500 border-0 text-white' >
+  Sign In
+</Button>
           </Link>
         )}
+        <NavbarToggle />
       </div>
-      <div className='flex gap-5'>
-        <Link to='/'>Home</Link>
-        <Link to='/about'>About</Link>
-        <Link to='/projects'>Projects</Link>
-      </div>
+      <NavbarCollapse>
+        <NavbarLink active={path === '/'} as={'div'}>
+          <Link to='/'>Home</Link>
+        </NavbarLink>
+        <NavbarLink active={path === '/about'} as={'div'}>
+          <Link to='/about'>About</Link>
+        </NavbarLink>
+        <NavbarLink active={path === '/projects'} as={'div'}>
+          <Link to='/projects'>Projects</Link>
+        </NavbarLink>
+      </NavbarCollapse>
     </Navbar>
   );
 }

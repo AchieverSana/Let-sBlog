@@ -2,30 +2,40 @@ import { Button } from 'flowbite-react';
 
 export default function CallToAction() {
   return (
-    <div className='flex border border-teal-500 p-3 justify-center items-center rounded-tl-3xl rounded-br-3xl flex-col sm:flex-row text-center'>
-      <div className='flex-1 justify-center flex flex-col'>
-        <h2 className='text-2xl'>
-          Want to learn HTML, CSS and JavaScript by building fun and engaging
-          projects?
+    <div className='flex flex-col sm:flex-row border border-teal-500 rounded-2xl overflow-hidden'>
+      <div className='flex-1 justify-center flex flex-col gap-4 p-6'>
+        <h2 className='text-2xl font-semibold dark:text-white'>
+          Want to solve DSA problems together?
         </h2>
-        <p className='text-gray-500 my-2'>
-          Check our 100 js projects website and start building your own projects
+        <p className='text-gray-500 dark:text-gray-400'>
+          Check out my LeetCode profile where I solve and explain coding problems regularly.
         </p>
-        <a
-          href='https://www.100jsprojects.com/'
+        
+          href='https://leetcode.com/u/Achieversana/'
           target='_blank'
           rel='noopener noreferrer'
         >
-          <Button
-            gradientDuoTone='purpleToPink'
-            className='rounded-tl-xl rounded-bl-none rounded-br-xl w-full'
-          >
-            100 JS Projects Website
+          <Button className='bg-gradient-to-r from-teal-400 to-cyan-500 border-0 w-full'>
+            View my LeetCode Profile
           </Button>
         </a>
       </div>
-      <div className='flex-1 p-7'>
-        <img src='https://media.geeksforgeeks.org/wp-content/cdn-uploads/20221114110410/Top-10-JavaScript-Project-Ideas-For-Beginners-2023.png' />
+      <div className='flex-1 p-6 flex flex-col gap-4 justify-center'>
+        <h2 className='text-2xl font-semibold dark:text-white'>
+          Explore my projects on GitHub
+        </h2>
+        <p className='text-gray-500 dark:text-gray-400'>
+          Browse through my repositories and see what I've been building.
+        </p>
+        
+          href='https://github.com/AcheiverSana'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          <Button className='bg-gradient-to-r from-teal-400 to-cyan-500 border-0 w-full'>
+            View my GitHub
+          </Button>
+        </a>
       </div>
     </div>
   );
