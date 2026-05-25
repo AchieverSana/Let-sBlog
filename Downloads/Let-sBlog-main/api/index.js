@@ -7,7 +7,7 @@ import authRoutes from './src/routes/auth.route.js';
 import postRoutes from './src/routes/post.route.js';
 import commentRoutes from './src/routes/comment.route.js';
 import cookieParser from 'cookie-parser';
-import path from 'path';
+
 
 
 
@@ -17,7 +17,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const app = express();
-const __dirname = path.resolve();
+
 
 // CORS configuration - Allow all origins
 app.use(
