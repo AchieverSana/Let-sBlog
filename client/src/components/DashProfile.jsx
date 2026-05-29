@@ -17,12 +17,12 @@ import { Link } from 'react-router-dom';
 
 export default function DashProfile() {
   const { currentUser, error, loading } = useSelector((state) => state.user);
- 
+
   const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
   const [updateUserError, setUpdateUserError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({});
-  
+
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -37,13 +37,11 @@ export default function DashProfile() {
       setUpdateUserError('No changes made');
       return;
     }
-  
+
     try {
       dispatch(updateStart());
       const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/user/update/${
-          currentUser._id
-        }`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/update/${currentUser._id}`,
         {
           method: 'PUT',
           credentials: 'include',
@@ -66,14 +64,13 @@ export default function DashProfile() {
       setUpdateUserError(error.message);
     }
   };
+
   const handleDeleteUser = async () => {
     setShowModal(false);
     try {
       dispatch(deleteUserStart());
       const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/user/delete/${
-          currentUser._id
-        }`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/delete/${currentUser._id}`,
         {
           method: 'DELETE',
           credentials: 'include',
@@ -109,18 +106,19 @@ export default function DashProfile() {
       console.log(error.message);
     }
   };
+
   return (
     <div className='max-w-lg mx-auto p-3 w-full'>
       <h1 className='my-7 text-center font-semibold text-3xl'>Profile</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         <div className='relative w-32 h-32 self-center shadow-md overflow-hidden rounded-full'>
-  <img
-    src={currentUser.profilePicture}
-    alt='user'
-    className='rounded-full w-full h-full object-cover border-8 border-[lightgray]'
-  />
-</div>
-        
+          <img
+            src={currentUser.profilePicture}
+            alt='user'
+            className='rounded-full w-full h-full object-cover border-8 border-[lightgray]'
+          />
+        </div>
+
         <TextInput
           type='text'
           id='username'
@@ -141,11 +139,12 @@ export default function DashProfile() {
           placeholder='password'
           onChange={handleChange}
         />
+        {/* ✅ FIX 2: Removed undefined `imageFileUploading` variable */}
         <Button
           type='submit'
           gradientDuoTone='purpleToBlue'
           outline
-          disabled={loading || imageFileUploading}
+          disabled={loading}
         >
           {loading ? 'Loading...' : 'Update'}
         </Button>
