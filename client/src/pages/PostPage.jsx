@@ -17,9 +17,7 @@ export default function PostPage() {
       try {
         setLoading(true);
         const res = await fetch(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-          }/api/post/getposts?slug=${postSlug}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/post/getposts?slug=${postSlug}`
         );
         const data = await res.json();
         if (!res.ok) {
@@ -63,6 +61,15 @@ export default function PostPage() {
         <Spinner size='xl' />
       </div>
     );
+
+  // ✅ FIX 1: Guard against null post before rendering
+  if (error || !post)
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <p className='text-xl text-gray-500'>Post not found.</p>
+      </div>
+    );
+
   return (
     <main className='p-3 flex flex-col max-w-6xl mx-auto min-h-screen'>
       <h1 className='text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl'>
@@ -94,6 +101,8 @@ export default function PostPage() {
       <div className='max-w-4xl mx-auto w-full'>
         <CallToAction />
       </div>
+
+      {/* ✅ FIX 1 (continued): post is guaranteed non-null here, safe to access post._id */}
       <CommentSection postId={post._id} />
 
       <div className='flex flex-col justify-center items-center mb-5'>
