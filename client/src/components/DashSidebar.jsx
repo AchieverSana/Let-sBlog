@@ -25,6 +25,7 @@ export default function DashSidebar() {
       setTab(tabFromUrl);
     }
   }, [location.search]);
+
   const handleSignout = async () => {
     try {
       const res = await fetch(
@@ -44,11 +45,15 @@ export default function DashSidebar() {
       console.log(error.message);
     }
   };
+
+  // ✅ FIX: Guard against null currentUser
+  if (!currentUser) return null;
+
   return (
     <Sidebar className='w-full md:w-56'>
       <Sidebar.Items>
         <Sidebar.ItemGroup className='flex flex-col gap-1'>
-          {currentUser && currentUser.isAdmin && (
+          {currentUser.isAdmin && (
             <Link to='/dashboard?tab=dash'>
               <Sidebar.Item
                 active={tab === 'dash' || !tab}
