@@ -8,10 +8,6 @@ import postRoutes from './src/routes/post.route.js';
 import commentRoutes from './src/routes/comment.route.js';
 import cookieParser from 'cookie-parser';
 
-
-
-
-// Configure environment variables
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
 }
@@ -21,21 +17,25 @@ app.get('/', (req, res) => {
   res.send('API is running');
 });
 
-// CORS configuration - Allow all origins
+// CORS: read allowed origins from env var so you don't need to edit code
+// when the Vercel URL changes. Set ALLOWED_ORIGINS on Render as a comma-
+// separated list, e.g. "https://lets-blog.vercel.app,https://other.vercel.app"
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map((o) => o.trim())
+  : ['https://let-s-blog-alpha.vercel.app'];
+
 app.use(
   cors({
-  origin: [
-  "https://let-s-blog-alpha.vercel.app"
-],
+    origin: allowedOrigins,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with'],
   })
 );
+
 let isConnected = false;
 const connectDB = async () => {
   if (isConnected) return;
-
   try {
     await mongoose.connect(process.env.MONGO_URI, {
       serverSelectionTimeoutMS: 10000,
@@ -52,34 +52,29 @@ const connectDB = async () => {
   }
 };
 
-// Middleware
 app.use(express.json());
 app.use(cookieParser());
 
-// Database middleware (only for endpoints that need DB)
 const connectMiddleware = async (req, res, next) => {
   try {
     await connectDB();
     next();
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: 'Database connection failed' });
+    res.status(500).json({ success: false, message: 'Database connection failed' });
   }
 };
 
-// Test endpoints
 app.get('/api/test', (req, res) => {
   res.json({ message: 'API is working!', timestamp: new Date() });
 });
 
-// Debug endpoints (helpful for deployment testing)
 app.get('/api/debug', (req, res) => {
   res.json({
     message: 'Debug info',
     nodeEnv: process.env.NODE_ENV,
     hasMongoEnv: !!process.env.MONGO_URI,
     hasJwtSecret: !!process.env.JWT_SECRET,
+    allowedOrigins,
     timestamp: new Date(),
   });
 });
@@ -87,47 +82,26 @@ app.get('/api/debug', (req, res) => {
 app.get('/api/debug-db', async (req, res) => {
   try {
     await connectDB();
-    res.json({
-      message: 'Database connection successful!',
-      connected: true,
-      timestamp: new Date(),
-    });
+    res.json({ message: 'Database connection successful!', connected: true, timestamp: new Date() });
   } catch (error) {
-    res.json({
-      message: 'Database connection failed',
-      connected: false,
-      error: error.message,
-      timestamp: new Date(),
-    });
+    res.json({ message: 'Database connection failed', connected: false, error: error.message, timestamp: new Date() });
   }
 });
 
-// Routes
 app.use('/api/user', connectMiddleware, userRoutes);
 app.use('/api/auth', connectMiddleware, authRoutes);
 app.use('/api/post', connectMiddleware, postRoutes);
 app.use('/api/comment', connectMiddleware, commentRoutes);
 
-
-
-
-// Error handling
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Internal Server Error';
-  return res.status(statusCode).json({
-    success: false,
-    message,
-    statusCode,
-  });
+  return res.status(statusCode).json({ success: false, message, statusCode });
 });
 
-// Export for Vercel
 export default app;
 
-
 const PORT = process.env.PORT || 5001;
-
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
