@@ -1,5 +1,8 @@
 import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react';
-import ReactQuill from 'react-quill';
+import { lazy, Suspense } from 'react';
+// Lazy-load ReactQuill so Vite doesn't try to pre-bundle it in Node.js
+// (react-quill accesses `document` on init and crashes the entire app if bundled eagerly)
+const ReactQuill = lazy(() => import('react-quill'));
 import 'react-quill/dist/quill.snow.css';
 import {
   getDownloadURL,
@@ -40,7 +43,7 @@ export default function CreatePost() {
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setImageUploadProgress(progress.toFixed(0));
         },
-        (error) => {
+        () => {
           setImageUploadError('Image upload failed');
           setImageUploadProgress(null);
         },
@@ -58,6 +61,7 @@ export default function CreatePost() {
       console.log(error);
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -77,7 +81,6 @@ export default function CreatePost() {
         setPublishError(data.message);
         return;
       }
-
       if (res.ok) {
         setPublishError(null);
         navigate(`/post/${data.slug}`);
@@ -86,6 +89,7 @@ export default function CreatePost() {
       setPublishError('Something went wrong');
     }
   };
+
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
       <h1 className='text-center text-3xl my-7 font-semibold'>Create a post</h1>
@@ -146,15 +150,17 @@ export default function CreatePost() {
             className='w-full h-72 object-cover'
           />
         )}
-        <ReactQuill
-          theme='snow'
-          placeholder='Write something...'
-          className='h-72 mb-12'
-          required
-          onChange={(value) => {
-            setFormData({ ...formData, content: value });
-          }}
-        />
+        <Suspense fallback={<div className='h-72 mb-12 border rounded'>Loading editor...</div>}>
+          <ReactQuill
+            theme='snow'
+            placeholder='Write something...'
+            className='h-72 mb-12'
+            required
+            onChange={(value) => {
+              setFormData({ ...formData, content: value });
+            }}
+          />
+        </Suspense>
         <Button type='submit' gradientDuoTone='purpleToPink'>
           Publish
         </Button>
