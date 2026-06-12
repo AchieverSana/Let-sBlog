@@ -12,4 +12,9 @@ export default defineConfig({
     },
   },
   plugins: [react()],
+  optimizeDeps: {
+    // react-quill accesses `document` during module init, which breaks
+    // Vite's Node.js pre-bundling step and causes a white screen in production.
+    exclude: ['react-quill'],
+  },
 });
