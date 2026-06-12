@@ -8,14 +8,21 @@ export default function Home() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/post/getPosts`
-      );
-      const data = await res.json();
-      setPosts(data.posts);
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/post/getPosts`
+        );
+        const data = await res.json();
+        if (res.ok) {
+          setPosts(data.posts);
+        }
+      } catch (error) {
+        console.log('Failed to fetch posts:', error.message);
+      }
     };
     fetchPosts();
   }, []);
+
   return (
     <div>
       <div className='flex flex-col gap-6 p-10  px-3 max-w-6xl mx-auto '>
