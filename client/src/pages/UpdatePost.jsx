@@ -1,5 +1,7 @@
 import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react';
-import ReactQuill from 'react-quill';
+import { lazy, Suspense } from 'react';
+// Lazy-load ReactQuill so Vite doesn't try to pre-bundle it in Node.js
+const ReactQuill = lazy(() => import('react-quill'));
 import 'react-quill/dist/quill.snow.css';
 import {
   getDownloadURL,
@@ -26,15 +28,11 @@ export default function UpdatePost() {
   const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
-    try {
-      const fetchPost = async () => {
+    const fetchPost = async () => {
+      try {
         const res = await fetch(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-          }/api/post/getposts?postId=${postId}`,
-          {
-            credentials: 'include',
-          }
+          `${import.meta.env.VITE_BACKEND_URL}/api/post/getposts?postId=${postId}`,
+          { credentials: 'include' }
         );
         const data = await res.json();
         if (!res.ok) {
@@ -42,16 +40,13 @@ export default function UpdatePost() {
           setPublishError(data.message);
           return;
         }
-        if (res.ok) {
-          setPublishError(null);
-          setFormData(data.posts[0]);
-        }
-      };
-
-      fetchPost();
-    } catch (error) {
-      console.log(error.message);
-    }
+        setPublishError(null);
+        setFormData(data.posts[0]);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchPost();
   }, [postId]);
 
   const handleUpdloadImage = async () => {
@@ -72,7 +67,7 @@ export default function UpdatePost() {
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setImageUploadProgress(progress.toFixed(0));
         },
-        (error) => {
+        () => {
           setImageUploadError('Image upload failed');
           setImageUploadProgress(null);
         },
@@ -90,13 +85,12 @@ export default function UpdatePost() {
       console.log(error);
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/post/updatepost/${
-          formData._id
-        }/${currentUser._id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/post/updatepost/${formData._id}/${currentUser._id}`,
         {
           method: 'PUT',
           credentials: 'include',
@@ -111,15 +105,13 @@ export default function UpdatePost() {
         setPublishError(data.message);
         return;
       }
-
-      if (res.ok) {
-        setPublishError(null);
-        navigate(`/post/${data.slug}`);
-      }
+      setPublishError(null);
+      navigate(`/post/${data.slug}`);
     } catch (error) {
       setPublishError('Something went wrong');
     }
   };
+
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
       <h1 className='text-center text-3xl my-7 font-semibold'>Update post</h1>
@@ -182,16 +174,18 @@ export default function UpdatePost() {
             className='w-full h-72 object-cover'
           />
         )}
-        <ReactQuill
-          theme='snow'
-          value={formData.content}
-          placeholder='Write something...'
-          className='h-72 mb-12'
-          required
-          onChange={(value) => {
-            setFormData({ ...formData, content: value });
-          }}
-        />
+        <Suspense fallback={<div className='h-72 mb-12 border rounded'>Loading editor...</div>}>
+          <ReactQuill
+            theme='snow'
+            value={formData.content}
+            placeholder='Write something...'
+            className='h-72 mb-12'
+            required
+            onChange={(value) => {
+              setFormData({ ...formData, content: value });
+            }}
+          />
+        </Suspense>
         <Button type='submit' gradientDuoTone='purpleToPink'>
           Update post
         </Button>
