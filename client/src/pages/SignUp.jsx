@@ -87,20 +87,13 @@ export default function SignUp() {
                 onChange={handleChange}
               />
             </div>
-            <Button
-              gradientDuoTone='purpleToPink'
-              type='submit'
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <Spinner size='sm' />
-                  <span className='pl-3'>Loading...</span>
-                </>
-              ) : (
-                'Sign Up'
-              )}
-            </Button>
+            <button
+  type="submit"
+  disabled={loading}
+  className="w-full bg-blue-600 text-white p-3 rounded-lg"
+>
+  {loading ? "Loading..." : "Sign Up"}
+</button>
             <OAuth />
           </form>
           <div className='flex gap-2 text-sm mt-5'>
