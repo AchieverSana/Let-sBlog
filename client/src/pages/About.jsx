@@ -2,27 +2,25 @@ import CallToAction from '../components/CallToAction';
 
 export default function About() {
   return (
-    <div className='min-h-screen flex items-center justify-center'>
+    <div className='min-h-screen flex items-center justify-center dark:bg-[rgb(16,23,42)]'>
       <div className='max-w-2xl mx-auto p-3 text-center'>
         <div>
-          <h1 className='text-3xl font font-semibold text-center my-7'>
-            About Sahand's Blog
+          <h1 className='text-3xl font-semibold text-center my-7 dark:text-white'>
+            About Sana's Blog
           </h1>
-          <div className='text-md text-gray-500 flex flex-col gap-6'>
+          <div className='text-md text-gray-500 dark:text-gray-400 flex flex-col gap-6'>
             <p>
-              Welcome to Sahand's Blog! This blog was created by Sahand Ghavidel
-              as a personal project to share his thoughts and ideas with the
-              world. Sahand is a passionate developer who loves to write about
-              technology, coding, and everything in between.
+              Welcome to Sana's Blog! This blog was created as a personal
+              project to share thoughts and ideas with the world. Sana is a
+              passionate developer who loves to write about technology, coding,
+              and everything in between.
             </p>
-
             <p>
               On this blog, you'll find weekly articles and tutorials on topics
               such as web development, software engineering, and programming
-              languages. Sahand is always learning and exploring new
-              technologies, so be sure to check back often for new content!
+              languages. Sana is always learning and exploring new technologies,
+              so be sure to check back often for new content!
             </p>
-
             <p>
               We encourage you to leave comments on our posts and engage with
               other readers. You can like other people's comments and reply to
