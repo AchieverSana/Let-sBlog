@@ -1,9 +1,12 @@
 import CallToAction from '../components/CallToAction';
+
 export default function Projects() {
   return (
-    <div className='min-h-screen max-w-4xl mx-auto flex justify-center gap-8 items-center flex-col p-6'>
-      <h1 className='text-4xl font-bold text-center'>Explore Our Projects</h1>
-      <p className='text-lg text-gray-600 text-center max-w-3xl'>
+    <div className='min-h-screen max-w-4xl mx-auto flex justify-center gap-8 items-center flex-col p-6 dark:bg-[rgb(16,23,42)]'>
+      <h1 className='text-4xl font-bold text-center dark:text-white'>
+        Explore Our Projects
+      </h1>
+      <p className='text-lg text-gray-600 dark:text-gray-400 text-center max-w-3xl'>
         Dive into a collection of fun and engaging projects designed to help you
         learn and master HTML, CSS, and JavaScript. Whether you're a beginner or
         an experienced developer, these projects will challenge your skills and
@@ -11,22 +14,22 @@ export default function Projects() {
         journey to the next level!
       </p>
       <div className='w-full flex flex-col gap-6'>
-        <section className='bg-gray-100 p-6 rounded-lg shadow-md'>
-          <h2 className='text-2xl font-semibold dark:text-gray-900'>
+        <section className='bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-md'>
+          <h2 className='text-2xl font-semibold dark:text-white'>
             Why Build Projects?
           </h2>
-          <p className='text-gray-700 mt-2'>
+          <p className='text-gray-700 dark:text-gray-300 mt-2'>
             Building projects is one of the best ways to learn programming. It
             allows you to apply theoretical knowledge in a practical way, solve
             real-world problems, and create a portfolio that showcases your
             skills to potential employers or clients.
           </p>
         </section>
-        <section className='bg-gray-100 p-6 rounded-lg shadow-md'>
-          <h2 className='text-2xl font-semibold dark:text-gray-900'>
+        <section className='bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-md'>
+          <h2 className='text-2xl font-semibold dark:text-white'>
             What You'll Learn
           </h2>
-          <ul className='list-disc list-inside text-gray-700 mt-2'>
+          <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 mt-2'>
             <li>How to structure HTML for clean and semantic code</li>
             <li>Styling with CSS to create visually appealing designs</li>
             <li>Adding interactivity with JavaScript</li>
