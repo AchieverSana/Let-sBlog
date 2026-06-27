@@ -1,1 +1,25 @@
-Redirecting...
+{
+  "name": "mern-blog-api",
+  "version": "1.0.0",
+  "description": "Backend API for MERN Blog",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "build": "",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
+    "express-validator": "^7.3.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^9.0.2"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.9"
+  }
+}
